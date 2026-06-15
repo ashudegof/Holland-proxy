@@ -45,6 +45,7 @@ IP-адрес	IP вашего сервера
 Остановить	docker compose down
 Логи	docker compose logs
 Сменить пароль	docker compose down && docker compose up -d
+
 📄 Лицензия
 MIT
 
