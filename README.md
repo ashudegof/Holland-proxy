@@ -1,145 +1,61 @@
-# dante-proxy
+# Holland-proxy
+
+**SOCKS5-прокси на базе Dante** — готовый к использованию прокси-сервер в Docker.
 
 [![Docker Hub](https://img.shields.io/docker/pulls/banfen321/dante-proxy)](https://hub.docker.com/r/banfen321/dante-proxy)
-[![Build](https://github.com/banfen321/dante-proxy/actions/workflows/docker.yml/badge.svg)](https://github.com/banfen321/dante-proxy/actions/workflows/docker.yml)
+[![Build](https://github.com/ashudegof/Holland-proxy/actions/workflows/docker.yml/badge.svg)](https://github.com/ashudegof/Holland-proxy/actions/workflows/docker.yml)
 
-**Production-ready SOCKS5 proxy in Docker — just clone and run.**
+## 🚀 Возможности
 
-Zero config required: the container auto-detects your network interface and generates
-a strong password on first start. No files to edit, no manual setup.
+- **Zero config** — не требует настройки
+- **Автоопределение сети** — сам находит сетевой интерфейс
+- **Безопасная генерация пароля** — надёжный пароль создаётся автоматически
+- **Работает без root** — все процессы от пользователя `nobody`
+- **Основан на Dante** — самый надёжный open-source SOCKS5-сервер
 
-Built on [Dante](https://www.inet.no/dante/) — the most battle-tested open-source SOCKS5 server,
-written in C, maintained since 1997. Updated to the latest version with all known CVEs patched.
-All processes run as `nobody` — no root inside the container at runtime.
+- ## 📦 Быстрый старт
 
-Inspired by [adegtyarev/docker-dante](https://github.com/adegtyarev/docker-dante).
-
----
-
-## Get started
-
-**1. Open the port on your server**
+### 1. Откройте порт
 
 ```bash
 sudo ufw allow 1080/tcp
-```
 
-> **Cloud servers** (Oracle Cloud, AWS, GCP, Hetzner) — you also need to open the port
-> in the cloud control panel. See the [Cloud firewall](#cloud-firewall) section below.
-
-**2. Clone and run**
-
-```bash
-git clone https://github.com/banfen321/dante-proxy.git && \
-cd dante-proxy && \
+git clone https://github.com/ashudegof/Holland-proxy.git
+cd Holland-proxy
 docker compose up -d
-```
 
-**3. Get your credentials**
+docker compose logs | grep -i password
 
-```bash
-docker compose logs dante
-```
-
-Done. Connect with the username and password printed in the logs.
 
 ---
 
-## Configuration
+### **Часть 4 — Подключение**
 
-Create a `.env` file to set your own values (optional — everything works without it):
+```markdown
+## 🔌 Подключение
 
-```bash
-cp .env.example .env
-```
+| Параметр | Значение |
+|----------|----------|
+| Тип прокси | SOCKS5 |
+| IP-адрес | IP вашего сервера |
+| Порт | 1080 |
+| Логин | proxy |
+| Пароль | из логов |
 
-```env
-SOCKD_PORT=1080
-SOCKD_USER_NAME=proxy
-SOCKD_USER_PASSWORD=your-password
-SOCKD_EXTERNAL_IFACE=        # leave empty — auto-detected
-```
+## 🛠 Управление
 
-Then restart:
+| Действие | Команда |
+|----------|---------|
+| Запустить | `docker compose up -d` |
+| Остановить | `docker compose down` |
+| Логи | `docker compose logs` |
+| Сменить пароль | `docker compose down && docker compose up -d` |
 
-```bash
-docker compose up -d
-```
+## 📄 Лицензия
 
----
+MIT
 
-## Connecting
+## 🙏 Благодарности
 
-```bash
-# Test
-curl --socks5-hostname user:password@<HOST>:1080 https://ifconfig.me
-
-# System-wide
-export ALL_PROXY=socks5h://user:password@<HOST>:1080
-```
-
-**Firefox:** Settings → Network → Manual proxy → SOCKS5, host `<HOST>`, port `1080`.  
-Enable *Proxy DNS when using SOCKS5*.
-
----
-
-## Cloud firewall
-
-Opening the port in your OS firewall is not enough on cloud servers — you also need
-to allow the port in the cloud provider's firewall / security group.
-
-### Oracle Cloud — Security List
-
-Go to: **OCI Console → Networking → Virtual Cloud Networks → your VCN → Security Lists → Default Security List → Add Ingress Rules**
-
-| Field | Value |
-|---|---|
-| Source Type | CIDR |
-| Source CIDR | `0.0.0.0/0` |
-| IP Protocol | **TCP** |
-| Destination Port Range | `1080` |
-| Description | dante-proxy |
-
-> SOCKS5 uses **TCP only**. No UDP rule needed.
-
-### AWS — Security Group
-
-Go to: **EC2 → Security Groups → your group → Inbound rules → Add rule**
-
-| Type | Protocol | Port | Source |
-|---|---|---|---|
-| Custom TCP | TCP | 1080 | 0.0.0.0/0 |
-
-### Hetzner — Firewall
-
-Go to: **Firewall → Inbound rules → Add rule**
-
-| Protocol | Port | Source |
-|---|---|---|
-| TCP | 1080 | 0.0.0.0/0 |
-
----
-
-## Management
-
-```bash
-docker compose logs -f          # live logs with connection activity
-docker compose restart          # restart
-docker compose pull && \
-docker compose up -d            # update to latest image
-docker compose down             # stop
-```
-
----
-
-## Security
-
-- Alpine 3.21 minimal base
-- Dante 1.4.4 — patches **CVE-2024-54662** (affected 1.4.0–1.4.3)
-- Multi-stage build — compiler and build tools not in final image
-- All processes run as **`nobody`** — no root at runtime
-- All capabilities dropped except `SETUID`/`SETGID`
-- `no-new-privileges:true`
-- Authentication required — anonymous access disabled
-- `network_mode: host` — required for correct routing on cloud servers (Oracle, Hetzner)
-
+- [banfen321/dante-proxy](https://github.com/banfen321/dante-proxy)
+- [adegtyarev/docker-dante](https://github.com/adegtyarev/docker-dante)
