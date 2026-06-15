@@ -13,49 +13,43 @@
 - **Работает без root** — все процессы от пользователя `nobody`
 - **Основан на Dante** — самый надёжный open-source SOCKS5-сервер
 
-- ## 📦 Быстрый старт
+## 📦 Быстрый старт
 
 ### 1. Откройте порт
 
 ```bash
 sudo ufw allow 1080/tcp
 
+### 2. Запуск
+
 git clone https://github.com/ashudegof/Holland-proxy.git
 cd Holland-proxy
 docker compose up -d
 
+### 3. Получение пароля
+
 docker compose logs | grep -i password
 
+_______________________
 
----
-
-### **Часть 4 — Подключение**
-
-```markdown
-## 🔌 Подключение
-
-| Параметр | Значение |
-|----------|----------|
-| Тип прокси | SOCKS5 |
-| IP-адрес | IP вашего сервера |
-| Порт | 1080 |
-| Логин | proxy |
-| Пароль | из логов |
-
-## 🛠 Управление
-
-| Действие | Команда |
-|----------|---------|
-| Запустить | `docker compose up -d` |
-| Остановить | `docker compose down` |
-| Логи | `docker compose logs` |
-| Сменить пароль | `docker compose down && docker compose up -d` |
-
-## 📄 Лицензия
-
+ Подключение
+Параметр	Значение
+Тип прокси	SOCKS5
+IP-адрес	IP вашего сервера
+Порт	1080
+Логин	proxy
+Пароль	из логов
+🛠 Управление
+Действие	Команда
+Запустить	docker compose up -d
+Остановить	docker compose down
+Логи	docker compose logs
+Сменить пароль	docker compose down && docker compose up -d
+📄 Лицензия
 MIT
 
-## 🙏 Благодарности
+🙏 Благодарности
+banfen321/dante-proxy
 
-- [banfen321/dante-proxy](https://github.com/banfen321/dante-proxy)
-- [adegtyarev/docker-dante](https://github.com/adegtyarev/docker-dante)
+adegtyarev/docker-dante
+
